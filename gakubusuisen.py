@@ -109,9 +109,10 @@ gender = st.selectbox("性別",features_calumns)
 bunri = st.selectbox("文理",bunri_columns)
 decision = st.selectbox("進路決定時期",decision_columns)
 bukatu = st.selectbox("部活動・サークル",bukatu_columns)
-shumi = st.multiselect("趣味",[
+shumi = st.multiselect("趣味(3つまで選択可)",[
     "音楽","アニメ・漫画・映画","読書","ゲーム","アウトドア","勉強",
-    "グルメ","旅行","SNS","推し活","スポーツ","動植物","ファッション・メイク","芸術","投資","その他"])
+    "グルメ","旅行","SNS","推し活","スポーツ","動植物","ファッション・メイク","芸術","投資","その他"]
+                      max_selections=3)
 
 
 # ===============================
