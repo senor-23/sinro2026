@@ -102,13 +102,17 @@ def weight_of(name):
 # ===============================
 # サイドバー
 # ===============================
-st.sidebar.header("特徴選択")
+st.sidebar.header("情報登録")
 
 selected_features = []
 
-for feature in features:
-    if st.sidebar.checkbox(feature):
-        selected_features.append(feature)
+mbti = st.selectbox("MBTI", character_columns)
+gender = st.selectbox("性別",features_calumns)
+bunri = st.selectbox("文理",bunri_columns)
+decision = st.selectbox("進路決定時期",decision_columns)
+bukatu = st.selectbox("部活動・サークル",bukatu_columns)
+shumi = st.checkbox("趣味",interest_columns)
+
 
 # ===============================
 # 推薦計算
