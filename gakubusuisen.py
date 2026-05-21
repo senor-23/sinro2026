@@ -109,11 +109,105 @@ gender = st.selectbox("性別",features_calumns)
 bunri = st.selectbox("文理",bunri_columns)
 decision = st.selectbox("進路決定時期",decision_columns)
 bukatu = st.selectbox("部活動・サークル",bukatu_columns)
-shumi = st.multiselect("趣味",[
+main_interect = st.multiselect("趣味",[
     "音楽","アニメ・漫画・映画","読書","ゲーム","アウトドア","勉強",
     "グルメ","旅行","SNS","推し活","スポーツ","動植物","ファッション・メイク","芸術","投資","その他"]
                       ,max_selections=3)
 
+selected_sub_hobbies = []
+
+# 音楽
+if "音楽" in main_hobbies:
+
+    music = st.multiselect(
+        "好きな音楽ジャンル",
+        [
+            "j-pop",
+            "k-pop",
+            "洋楽"
+        ]
+    )
+
+    selected_sub_hobbies.extend(music)
+
+# アニメ・漫画・映画
+if "アニメ・漫画・映画" in main_hobbies:
+
+    anime = st.multiselect(
+        "好きなジャンル（アニメ・漫画・映画）",
+        [
+            "バトル・アクション",
+            "SF・ファンタジー",
+            "恋愛・ラブコメ",
+            "ミステリー・サスペンス",
+            "スポーツ(漫画)",
+            "コメディ"
+        ]
+    )
+
+    selected_sub_hobbies.extend(anime)
+
+# 読書
+if "読書" in main_hobbies:
+
+    books = st.multiselect(
+        "好きな読書ジャンル",
+        [
+            "小説",
+            "ビジネス",
+            "ライトノベル",
+            "エッセイ",
+            "学術書"
+        ]
+    )
+
+    selected_sub_hobbies.extend(books)
+
+# ゲーム
+if "ゲーム" in main_hobbies:
+
+    games = st.multiselect(
+        "好きなゲームジャンル",
+        [
+            "アクション",
+            "RPG",
+            "シュミレーション",
+            "パズル",
+            "ソシャゲ"
+        ]
+    )
+
+    selected_sub_hobbies.extend(games)
+
+# アウトドア
+if "アウトドア" in main_hobbies:
+
+    outdoor = st.multiselect(
+        "アウトドアの趣味",
+        [
+            "キャンプ",
+            "釣り",
+            "登山",
+            "フェス"
+        ]
+    )
+
+    selected_sub_hobbies.extend(outdoor)
+
+# 勉強
+if "勉強" in main_hobbies:
+
+    study = st.multiselect(
+        "興味のある勉強分野",
+        [
+            "語学",
+            "数学",
+            "歴史",
+            "資格"
+        ]
+    )
+
+    selected_sub_hobbies.extend(study)
 
 # ===============================
 # 推薦計算
