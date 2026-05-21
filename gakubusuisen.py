@@ -102,8 +102,6 @@ def weight_of(name):
 # ===============================
 # サイドバー
 # ===============================
-st.sidebar.header("情報登録")
-
 selected_features = []
 
 mbti = st.selectbox("MBTI", character_columns)
