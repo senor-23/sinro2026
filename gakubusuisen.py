@@ -214,7 +214,37 @@ if "勉強" in main_hobbies:
 # ===============================
 if st.button("推薦を計算する"):
 
+    # -------------------------------
+    # 選択特徴をまとめる
+    # -------------------------------
+    selected_features = []
+
+    # selectbox系
+    selected_features.extend([
+        mbti,
+        gender,
+        bunri,
+        decision,
+        bukatu
+    ])
+
+    # 趣味（大分類）
+    selected_features.extend(main_hobbies)
+
+    # 趣味（サブ項目）
+    selected_features.extend(selected_sub_hobbies)
+
+    # Noneや空文字削除
+    selected_features = [
+        feature for feature in selected_features
+        if feature is not None and feature != ""
+    ]
+
+    # -------------------------------
+    # 未選択チェック
+    # -------------------------------
     if len(selected_features) == 0:
+
         st.warning("特徴を選択してください")
 
     else:
@@ -226,6 +256,7 @@ if st.button("推薦を計算する"):
         # ===============================
         for dept in departments:
 
+            # その学部の学生抽出
             dept_students = df[df[dept] == 1]
 
             scores = []
@@ -238,28 +269,41 @@ if st.button("推薦を計算する"):
 
                 for feature in selected_features:
 
-                    if student[feature] == 1:
+                    # 列存在確認（KeyError防止）
+                    if feature in df.columns:
 
-                        score += weight_of(feature)
-                        matched_features.append(feature)
+                        # 一致判定
+                        if student[feature] == 1:
+
+                            score += weight_of(feature)
+
+                            matched_features.append(feature)
 
                 scores.append(score)
 
-            # 平均類似度
+            # ===============================
+            # 平均スコア
+            # ===============================
             avg_score = 0
 
             if len(scores) > 0:
+
                 avg_score = sum(scores) / len(scores)
 
             department_scores.append({
+
                 "学部学科": dept,
+
                 "スコア": round(avg_score, 2),
+
                 "人数": len(dept_students),
+
                 "一致特徴": list(set(matched_features))
+
             })
 
         # ===============================
-        # スコア順に並べ替え
+        # スコア順ソート
         # ===============================
         department_scores = sorted(
             department_scores,
@@ -274,7 +318,7 @@ if st.button("推薦を計算する"):
 
         for i, result in enumerate(department_scores[:8]):
 
-            st.markdown(f"## {i+1}位 {result['学部学科']}")
+            st.markdown(f"## {i+1}位：{result['学部学科']}")
 
             st.metric(
                 label="推薦スコア",
@@ -283,12 +327,15 @@ if st.button("推薦を計算する"):
 
             st.write(f"参照学生数：{result['人数']}人")
 
+            # 一致特徴
             if len(result["一致特徴"]) > 0:
+
                 st.write("一致した特徴")
 
                 cols = st.columns(4)
 
                 for idx, feature in enumerate(result["一致特徴"][:8]):
+
                     cols[idx % 4].success(feature)
 
             st.divider()
