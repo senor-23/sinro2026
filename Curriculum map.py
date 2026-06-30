@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 from departments import departments
 
 st.set_page_config(
@@ -220,4 +221,104 @@ with st.expander("学科ベクトル（正規化）"):
     ).T
 
     st.dataframe(df.round(2))
+
+def cosine_similarity(user_vector, department_vector):
+    """
+    コサイン類似度を計算
+    """
+
+    user = np.array(user_vector)
+    dept = np.array(department_vector)
+
+    dot = np.dot(user, dept)
+
+    norm_user = np.linalg.norm(user)
+    norm_dept = np.linalg.norm(dept)
+
+    if norm_user == 0 or norm_dept == 0:
+        return 0
+
+    return dot / (norm_user * norm_dept)
+
+user_vector = [
+
+    scores["思考力"] / 5,
+    scores["幅広い教養"] / 5,
+    scores["主体性"] / 5,
+    scores["発信力"] / 5,
+    scores["協働性"] / 5,
+    scores["倫理性"] / 5,
+    scores["創造性"] / 5
+
+]
+
+similarities = {}
+
+for name, vector in normalized_departments.items():
+
+    similarity = cosine_similarity(
+        user_vector,
+        vector
+    )
+
+    similarities[name] = similarity
+
+ranking = sorted(
+
+    similarities.items(),
+
+    key=lambda x: x[1],
+
+    reverse=True
+
+)
+
+st.divider()
+
+st.header("🎓 あなたにおすすめの学科 TOP5")
+
+rank_df = pd.DataFrame(
+
+    ranking,
+
+    columns=[
+        "学科",
+        "類似度"
+    ]
+
+)
+
+rank_df["適合度"] = (
+
+    rank_df["類似度"] * 100
+
+).round(1)
+
+st.dataframe(
+
+    rank_df.head(5)[["学科","適合度"]],
+
+    hide_index=True,
+
+    use_container_width=True
+
+)
+
+best = ranking[0]
+
+st.success(
+
+    f"あなたに最もおすすめなのは **{best[0]}** です！"
+
+)
+
+st.subheader("学科との適合度")
+
+for name, score in ranking[:5]:
+
+    st.write(name)
+
+    st.progress(float(score))
+
+    st.write(f"{score*100:.1f}%")
 
